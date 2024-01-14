@@ -33,7 +33,6 @@ public class Bst {
             printBST(root.left);
             System.out.print(" key: "+root.key  + " repeating: " + root.r);
             printBST(root.right);
-
         }
     }
 
@@ -49,23 +48,29 @@ public class Bst {
             if (root.r > 1) {
                 root.r -= 1;
                 return root;
+            } else {
+                if (root.left == null) {
+                    return root.right;
+                } else if (root.right == null) {
+                    return root.left;
+                }
+                Node minValueNode = minValue(root.right);
+                if (minValueNode != null) {
+                    root.key = minValueNode.key;
+                    root.right = delete(root.right, minValueNode.key);
+                }
             }
-            if (root.left == null) {
-                return root.right;
-            } else if (root.right == null) {
-                return root.left;
-            }
-            Node minValueNode = minValue(root.right);
-            root.key = minValueNode.key;
-            root.right = delete(root.right, minValueNode.key);
         }
         return root;
     }
-
-    private Node minValue(Node root){
-        while (root!=null){
-            root = root.left;
+    private Node minValue(Node node) {
+        if (node == null) {
+            return null;
         }
-        return root;
+        Node current = node;
+        while (current.left != null) {
+            current = current.left;
+        }
+        return current;
     }
 }
